@@ -15,6 +15,7 @@
     "@capacitor/android": "^8.4.1",
     "@capacitor/cli": "^8.4.1",
     "@capacitor/core": "^8.4.1",
+    "@capacitor/ios": "^8.4.1",
     "@googlemaps/js-api-loader": "^2.1.1",
     "@rive-app/react-canvas": "^4.29.5",
     "@supabase/supabase-js": "^2.110.1",
