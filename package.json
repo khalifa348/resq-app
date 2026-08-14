@@ -1,0 +1,36 @@
+{
+  "name": "resq-app",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "vite build && firebase deploy",
+    "deploy:hosting": "vite build && firebase deploy --only hosting",
+    "firebase:login": "firebase login"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
+    "@googlemaps/js-api-loader": "^2.1.1",
+    "@rive-app/react-canvas": "^4.29.5",
+    "@supabase/supabase-js": "^2.110.1",
+    "framer-motion": "^12.42.2",
+    "lottie-react": "^2.4.1",
+    "lucide-react": "^1.21.0",
+    "mapbox-gl": "^3.25.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "vite": "^6.0.5"
+  }
+}

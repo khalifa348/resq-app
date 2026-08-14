@@ -1,0 +1,53 @@
+name: Build ResQ IPA
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build web assets
+        run: npm run build
+
+      - name: Add iOS platform
+        run: npx cap add ios
+
+      - name: Add location permission (map tracking)
+        run: |
+          if ! /usr/libexec/PlistBuddy -c "Print :NSLocationWhenInUseUsageDescription" ios/App/App/Info.plist 2>/dev/null; then
+            /usr/libexec/PlistBuddy -c "Add :NSLocationWhenInUseUsageDescription string 'ResQ uses your location to find nearby providers and track service status.'" ios/App/App/Info.plist
+          fi
+
+      - name: Sync native project
+        run: npx cap sync ios
+
+      - name: Pod install
+        run: cd ios/App && pod install
+
+      - name: Build unsigned IPA
+        run: xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+
+      - name: Package IPA
+        run: |
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/ResQApp.app Payload/
+          zip -qr ResQApp.ipa Payload/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ResQApp-ipa
+          path: ResQApp.ipa
+          if-no-files-found: error
